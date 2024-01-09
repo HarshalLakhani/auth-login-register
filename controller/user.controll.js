@@ -22,3 +22,23 @@ const registerlog = async (req, res) => {
         res.send("register ssuccesfull")
     })
 }
+
+const loginlog = async (req, res) => {
+    const { email, password } = req.body;
+    let data = await user.findOne({ email });
+    if (data) {
+      bcrypt.compare(password, data.password, (err, result) => {
+        if (result) {
+          let token = jwt.sign({ id: data._id }, "token");
+          res.cookie("token", token);
+          res.send("register succesfull")
+        } else {
+          res.send({ msg: "Password incorrect" });
+        }
+      });
+    } else {
+      res.send({ msg: "User not found" });
+    }
+  };
+
+module.exports={registerlog , loginlog}
