@@ -5,7 +5,7 @@ const Auth = (req, res, next) => {
   
   if (token) {
     let decode = jwt.verify(token, "token");
-    req.body.userID = decode.id
+    req.body = decode.id
     next();
   } else {
     res.send({ msg: "user not logged in" });
